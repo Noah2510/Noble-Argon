@@ -7,7 +7,7 @@
 
 // Testing for github 
 #include "xc.h"
-#include "Motion_Functions.h"
+#include "MotionFunctions.h"
 #pragma config FNOSC = FRCDIV // 8 MHz oscillator with post scaler option
 
 int main(void) {

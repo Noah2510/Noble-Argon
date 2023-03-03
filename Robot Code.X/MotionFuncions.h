@@ -5,6 +5,9 @@
  * Revision history: 
  */
 
+#ifndef XC_HEADER_TEMPLATE_H
+#define	XC_HEADER_TEMPLATE_H
+
 #include <xc.h> // include processor files - each processor file is guarded.  
 
 // Some of these are just here in case we want to use later
