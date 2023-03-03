@@ -120,7 +120,7 @@ void Backward(int dis) { // Enter distance in mm
     OC3R = 0;
 }
 
-void Turn_90(char dir) {
+void Turn_90(int dir) {
     
     steps = 0;
     
