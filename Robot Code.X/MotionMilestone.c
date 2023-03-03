@@ -18,11 +18,11 @@ int main(void) {
     Motion_Setup();
     
     while(1){
-        Forward(1000);
-        Turn_90(right);
-        Forward(1000);
-        Turn_180();
-        Forward(1000);
+        Forward();
+        //Turn_90(right);
+        //Forward();
+        //Turn_180();
+        //Forward();
         break; // or we could have the loop repeat
     }
         

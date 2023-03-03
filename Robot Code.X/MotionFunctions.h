@@ -5,8 +5,8 @@
  * Revision history: 
  */
 
-#ifndef XC_HEADER_TEMPLATE_H
-#define	XC_HEADER_TEMPLATE_H
+//#ifndef XC_HEADER_TEMPLATE_H
+//#define	XC_HEADER_TEMPLATE_H
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
@@ -20,6 +20,9 @@
 #define right_motor_dc OC2R
 #define right 1
 #define left 0
+#define med_pwm 1249
+#define fast_pwm 624
+#define slow_pwm 1999
 
 unsigned static int steps = 0;
 
@@ -29,12 +32,6 @@ void __attribute__((interrupt, no_auto_psv))_OC2Interrupt(void)
     _OC1IF = 0; // clear flag
     
     steps++; // Only counting steps on the left motor. 
-} 
-
-//OC interrupt for the right motor
-void __attribute__((interrupt, no_auto_psv))_OC3Interrupt(void) 
-{   
-    _OC1IF = 0; // clear flag 
 } 
 
 void Motion_Setup(void) {
@@ -54,8 +51,8 @@ void Motion_Setup(void) {
     
     _TRISB9 = 0; // left servo
     
-    _LATB13 = 0; // start both servos in the same direction
-    _LATB9 = 0; 
+    _LATB13 = 1; // start both servos in the same direction
+    _LATB9 = 1; 
     
     // Configure PWM pins 
     //right motor
@@ -79,27 +76,30 @@ void Motion_Setup(void) {
     OC3R = 0; 
 }
 
-void Forward(int dis) { // Enter the distance in mm
+void Forward(void) { // Enter the distance in mm
     
+    steps = 0;
     // Wheel diameter is 95 mm 
-    float rotations = dis/pi*95;
-    int num_steps = 200 * rotations;
+    //float rotations = dis/pi*95;
+    int num_steps = 447;
     
-    while (steps < num_steps){
-        OC2RS = 4999;
-        OC2R = 3000;
-        OC3RS = 4999;
-        OC3R = 3000;
+    if (steps < num_steps){
+        OC2RS = med_pwm;
+        OC2R = 400;
+        OC3RS = med_pwm;
+        OC3R = 400;
     }
-    
-    OC2RS = 0;
-    OC2R = 0;
-    OC3RS = 0;
-    OC3R = 0;
+    else {
+        OC2RS = 0;
+        OC2R = 0;
+        OC3RS = 0;
+        OC3R = 0;
+    }
 }
 
 void Backward(int dis) { // Enter distance in mm
     
+    steps = 0;
     right_dir_pin = 1;
     left_dir_pin = 1;
     
@@ -108,10 +108,10 @@ void Backward(int dis) { // Enter distance in mm
     
     while (steps < num_steps){
         
-        OC2RS = 4999;
-        OC2R = 3000;
-        OC3RS = 4999;
-        OC3R = 3000;
+        OC2RS = fast_pwm;
+        OC2R = 400;
+        OC3RS = fast_pwm;
+        OC3R = 400;
     }
     
     OC2RS = 0;
@@ -130,15 +130,15 @@ void Turn_90(int dir) {
         
         while(steps < num_steps){
             
-            left_dir_pin = 1; 
+            left_dir_pin = 0; 
             
-            OC2RS = 4999;
-            OC2R = 3000;
-            OC3RS = 4999;
-            OC3R = 3000;
+            OC2RS = fast_pwm;
+            OC2R = 400;
+            OC3RS = fast_pwm;
+            OC3R = 400;
         }
         
-        left_dir_pin = 0; // return to forward direction
+        left_dir_pin = 1; // return to forward direction
     }
     else if (dir == left){
         
@@ -146,15 +146,15 @@ void Turn_90(int dir) {
         
         while(steps < num_steps) { 
             
-            right_dir_pin = 1; 
+            right_dir_pin = 0; 
             
-            OC2RS = 4999;
-            OC2R = 3000;
-            OC3RS = 4999;
-            OC3R = 3000;
+            OC2RS = fast_pwm;
+            OC2R = 400;
+            OC3RS = fast_pwm;
+            OC3R = 400;
         }
         
-        right_dir_pin = 0; // return to forward
+        right_dir_pin = 1; // return to forward
     }
     
     OC2RS = 0; // stop the robot
@@ -170,12 +170,12 @@ void Turn_180(void){
     
     while (steps < num_steps) {
         
-        left_dir_pin = 1;
+        left_dir_pin = 0;
         
-        OC2RS = 4999;
-        OC2R = 3000;
-        OC3RS = 4999;
-        OC3R = 3000;
+        OC2RS = fast_pwm;
+        OC2R = 400;
+        OC3RS = fast_pwm;
+        OC3R = 400;
     }
     
     OC2RS = 0; // stop the robot
@@ -183,5 +183,5 @@ void Turn_180(void){
     OC3RS = 0;
     OC3R = 0;
     
-    left_dir_pin = 0; // back to forwards
+    left_dir_pin = 1; // back to forwards
 }
