@@ -65,10 +65,10 @@ Default Scalar Model: Small
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200                0xe0           0x150  (336)
-.text                        0x2e0               0x15a           0x207  (519)
-.dinit                       0x43a                 0x8             0xc  (12)
+.text                        0x2e0               0x160           0x210  (528)
+.dinit                       0x440                 0x8             0xc  (12)
 
-                 Total "program" memory used (bytes):          0x363  (867) 5%
+                 Total "program" memory used (bytes):          0x36c  (876) 5%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x800]
@@ -113,24 +113,24 @@ External Symbols in Program Memory (by address):
                   0x0002e0                  _Motion_Setup
                   0x00035e                  _Forward
                   0x000374                  _Backward
-                  0x000390                  _STOP
-                  0x00039e                  _Turn_Right
-                  0x0003b4                  _main
+                  0x00038e                  _STOP
+                  0x00039c                  _Turn_Right
+                  0x0003b2                  _main
 
 External Symbols in Program Memory (by name):
 
                   0x000374                  _Backward
                   0x00035e                  _Forward
                   0x0002e0                  _Motion_Setup
-                  0x000390                  _STOP
-                  0x00039e                  _Turn_Right
+                  0x00038e                  _STOP
+                  0x00039c                  _Turn_Right
                   0x0002da                  __DefaultInterrupt
                   0x0002c8                  __OC2Interrupt
                   0x000252                  __data_init
                   0x000252                  __data_init_standard
                   0x00023c                  __psv_init
                   0x000200                  __resetPRI
-                  0x0003b4                  _main
+                  0x0003b2                  _main
 
 Memory Configuration
 
@@ -235,18 +235,18 @@ __FDS
 .comment
  *(.comment)
 
-.debug_info       0x000000       0x1701
+.debug_info       0x000000       0x16f9
  *(.debug_info)
- .debug_info      0x000000       0x1701 build/default/production/MotionMilestone.o
+ .debug_info      0x000000       0x16f9 build/default/production/MotionMilestone.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev     0x000000        0x14f
+.debug_abbrev     0x000000        0x129
  *(.debug_abbrev)
- .debug_abbrev    0x000000        0x14f build/default/production/MotionMilestone.o
+ .debug_abbrev    0x000000        0x129 build/default/production/MotionMilestone.o
 
-.debug_line       0x000000        0x18f
+.debug_line       0x000000        0x192
  *(.debug_line)
- .debug_line      0x000000        0x18f build/default/production/MotionMilestone.o
+ .debug_line      0x000000        0x192 build/default/production/MotionMilestone.o
 
 .debug_frame      0x000000         0xd4
  *(.debug_frame)
@@ -920,14 +920,14 @@ __c30_signature
  .ivt._OC2Interrupt
                   0x000020          0x2 build/default/production/MotionMilestone.o
 
-.text             0x0002e0        0x15a
- .text            0x0002e0        0x15a build/default/production/MotionMilestone.o
+.text             0x0002e0        0x160
+ .text            0x0002e0        0x160 build/default/production/MotionMilestone.o
                   0x0002e0                  _Motion_Setup
                   0x00035e                  _Forward
                   0x000374                  _Backward
-                  0x000390                  _STOP
-                  0x00039e                  _Turn_Right
-                  0x0003b4                  _main
+                  0x00038e                  _STOP
+                  0x00039c                  _Turn_Right
+                  0x0003b2                  _main
 
-.dinit            0x00043a          0x8
- .dinit           0x00043a          0x8 data_init
+.dinit            0x000440          0x8
+ .dinit           0x000440          0x8 data_init

@@ -19,7 +19,7 @@ void __attribute__((interrupt, no_auto_psv))_OC2Interrupt(void)
     steps++; // Only counting steps on the left motor. 
 } 
 
-enum { FORWARD, TURNR } state;
+enum { FORWARD, TURNR, TURNR180 } state;
 
 int main(void) {
     
@@ -45,12 +45,14 @@ int main(void) {
                 else if (steps >= 6000 && steps < 7600)
                 {
                     Turn_Right();
-                    state = TURNR;
+                    state = TURNR180;
                 }
                 
                 else if (steps > 10200)
                 {
                     steps = 0;
+                    Forward();
+                    state = FORWARD;
                 }
                 
                 break;
@@ -63,7 +65,11 @@ int main(void) {
                     state = FORWARD;
                 }
                 
-                else if (steps >= 7600 && steps < 10200)
+                break;
+                
+            case TURNR180:
+                
+                if (steps >= 7600 && steps < 10200)
                 {
                     Forward();
                     state = FORWARD;
