@@ -78,7 +78,7 @@ void Forward(void) { // Enter the distance in mm
 
 }
 
-void Backward(int dis) { // Enter distance in mm
+void Backward(void) { // Enter distance in mm
     
     right_dir_pin = 1;
     left_dir_pin = 1;
