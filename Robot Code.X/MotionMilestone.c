@@ -10,13 +10,12 @@
 #include "MotionFunctions.h"
 #pragma config FNOSC = FRCDIV // 8 MHz oscillator with post scaler option
 
-unsigned int steps = 0;
+unsigned static int steps = 0;
 
 void __attribute__((interrupt, no_auto_psv))_OC2Interrupt(void) 
 {   
+    steps = steps + 1;
     _OC2IF = 0; // clear flag
-    
-    steps++; // Only counting steps on the left motor. 
 } 
 
 enum { FORWARD, TURNR, TURNR180 } state;
@@ -27,18 +26,22 @@ int main(void) {
     _RCDIV = 0b010; // 2 MHz after 1/4 post scaler
     
     Motion_Setup();
+     
+    OC2R = 400;
+    OC3R = 400;
     
     state = FORWARD;
-    
+
     //Switch statement of motion inside loop 
     while(1){
-        
+
         switch(state)
         {
             case FORWARD:
-                
-                if (steps >= 2600 && steps < 3400)
+
+                if (steps >= 2600 && steps < 3400) //&& steps < 3400)
                 {
+                    _LATB7 = 1;
                     Turn_Right();
                     state = TURNR;
                 }
@@ -59,8 +62,9 @@ int main(void) {
                 
             case TURNR:
                 
-                if (steps >= 3400 && steps < 6000)
+                if (steps >= 3450)
                 {
+                    _LATB7 = 0;
                     Forward();
                     state = FORWARD;
                 }
@@ -69,7 +73,7 @@ int main(void) {
                 
             case TURNR180:
                 
-                if (steps >= 7600 && steps < 10200)
+                if (steps >= 7700 && steps < 10200)
                 {
                     Forward();
                     state = FORWARD;

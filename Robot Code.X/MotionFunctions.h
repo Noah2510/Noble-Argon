@@ -25,15 +25,6 @@
 #define slow_pwm 1999
 
 void Motion_Setup(void) {
-    // Configure OC2 interrupt
-    _OC2IP = 3; // interrupt priority
-    _OC2IE = 1; // Enable interrupt
-    _OC2IF = 0; // clear flag
-    
-    // Configure OC3 interrupt
-    _OC3IP = 4; // interrupt priority
-    _OC3IE = 1; // Enable interrupt
-    _OC3IF = 0; // clear flag
     
     // Configure direction pins as digital outputs
     _ANSB13 = 0; // right servo
@@ -42,7 +33,7 @@ void Motion_Setup(void) {
     _TRISB9 = 0; // left servo
     
     _TRISB7 = 0;
-    _LATB7 = 1;
+    _LATB7 = 0;
     
     right_dir_pin = 1; // start both servos in the same direction
     left_dir_pin = 1; 
@@ -56,7 +47,7 @@ void Motion_Setup(void) {
     OC2CON2bits.SYNCSEL = 0b11111;
     OC2CON2bits.OCTRIG = 0;
     OC2RS = fast_pwm; 
-    OC2R = 400; 
+    OC2R = 0; 
     
     //Left motor
     OC3CON1 = 0;
@@ -66,11 +57,18 @@ void Motion_Setup(void) {
     OC3CON2bits.SYNCSEL = 0b11111;
     OC3CON2bits.OCTRIG = 0;
     OC3RS = fast_pwm; 
-    OC3R = 400; 
+    OC3R = 0; 
+    
+    // Configure OC2 interrupt AFTER pwm is configured
+    _OC2IP = 4; // interrupt priority
+    _OC2IE = 1; // Enable interrupt
+    _OC2IF = 0; // clear flag
 }
 
 void Forward(void) { // Enter the distance in mm
     
+    right_dir_pin = 1;
+    left_dir_pin = 1;
     OC2RS = fast_pwm;
     OC2R = 400;
     OC3RS = fast_pwm;
@@ -80,8 +78,8 @@ void Forward(void) { // Enter the distance in mm
 
 void Backward(void) { // Enter distance in mm
     
-    right_dir_pin = 1;
-    left_dir_pin = 1;
+    right_dir_pin = 0;
+    left_dir_pin = 0;
     
     OC2RS = fast_pwm;
     OC2R = 400;
@@ -98,6 +96,7 @@ void STOP(void) {
 
 void Turn_Right(void) {
     
+    right_dir_pin = 0;
     OC2RS = fast_pwm;
     OC2R = 400;
     OC3RS = fast_pwm;
