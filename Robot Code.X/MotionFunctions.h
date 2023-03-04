@@ -55,8 +55,8 @@ void Motion_Setup(void) {
     OC2CON1bits.OCM = 0b110;
     OC2CON2bits.SYNCSEL = 0b11111;
     OC2CON2bits.OCTRIG = 0;
-    OC2RS = 0; 
-    OC2R = 0; 
+    OC2RS = fast_pwm; 
+    OC2R = 400; 
     
     //Left motor
     OC3CON1 = 0;
@@ -65,8 +65,8 @@ void Motion_Setup(void) {
     OC3CON1bits.OCM = 0b110;
     OC3CON2bits.SYNCSEL = 0b11111;
     OC3CON2bits.OCTRIG = 0;
-    OC3RS = 0; 
-    OC3R = 0; 
+    OC3RS = fast_pwm; 
+    OC3R = 400; 
 }
 
 void Forward(void) { // Enter the distance in mm

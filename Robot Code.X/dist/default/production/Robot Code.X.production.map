@@ -65,10 +65,10 @@ Default Scalar Model: Small
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200                0xe0           0x150  (336)
-.text                        0x2e0               0x152           0x1fb  (507)
-.dinit                       0x432                 0x8             0xc  (12)
+.text                        0x2e0               0x15a           0x207  (519)
+.dinit                       0x43a                 0x8             0xc  (12)
 
-                 Total "program" memory used (bytes):          0x357  (855) 5%
+                 Total "program" memory used (bytes):          0x363  (867) 5%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x800]
@@ -111,26 +111,26 @@ External Symbols in Program Memory (by address):
                   0x0002c8                  __OC2Interrupt
                   0x0002da                  __DefaultInterrupt
                   0x0002e0                  _Motion_Setup
-                  0x000356                  _Forward
-                  0x00036c                  _Backward
-                  0x000388                  _STOP
-                  0x000396                  _Turn_Right
-                  0x0003ac                  _main
+                  0x00035e                  _Forward
+                  0x000374                  _Backward
+                  0x000390                  _STOP
+                  0x00039e                  _Turn_Right
+                  0x0003b4                  _main
 
 External Symbols in Program Memory (by name):
 
-                  0x00036c                  _Backward
-                  0x000356                  _Forward
+                  0x000374                  _Backward
+                  0x00035e                  _Forward
                   0x0002e0                  _Motion_Setup
-                  0x000388                  _STOP
-                  0x000396                  _Turn_Right
+                  0x000390                  _STOP
+                  0x00039e                  _Turn_Right
                   0x0002da                  __DefaultInterrupt
                   0x0002c8                  __OC2Interrupt
                   0x000252                  __data_init
                   0x000252                  __data_init_standard
                   0x00023c                  __psv_init
                   0x000200                  __resetPRI
-                  0x0003ac                  _main
+                  0x0003b4                  _main
 
 Memory Configuration
 
@@ -920,14 +920,14 @@ __c30_signature
  .ivt._OC2Interrupt
                   0x000020          0x2 build/default/production/MotionMilestone.o
 
-.text             0x0002e0        0x152
- .text            0x0002e0        0x152 build/default/production/MotionMilestone.o
+.text             0x0002e0        0x15a
+ .text            0x0002e0        0x15a build/default/production/MotionMilestone.o
                   0x0002e0                  _Motion_Setup
-                  0x000356                  _Forward
-                  0x00036c                  _Backward
-                  0x000388                  _STOP
-                  0x000396                  _Turn_Right
-                  0x0003ac                  _main
+                  0x00035e                  _Forward
+                  0x000374                  _Backward
+                  0x000390                  _STOP
+                  0x00039e                  _Turn_Right
+                  0x0003b4                  _main
 
-.dinit            0x000432          0x8
- .dinit           0x000432          0x8 data_init
+.dinit            0x00043a          0x8
+ .dinit           0x00043a          0x8 data_init
