@@ -65,6 +65,39 @@ void Motion_Setup(void) {
     _OC2IF = 0; // clear flag
 }
 
+void Analog_Setup(void) {
+    _ADON = 0;    // Disable A/D module during configuration
+    
+    // AD1CON1
+    _MODE12 = 1;  // 12-bit resolution
+    _FORM = 0;    // unsigned integer output
+    _SSRC = 7;    // auto convert
+    _ASAM = 1;    // auto sample
+
+    // AD1CON2
+    _PVCFG = 0;   // use VDD as positive reference
+    _NVCFG = 0;   // use VSS as negative reference
+    _BUFREGEN = 1;// store results in buffer corresponding to channel number
+    _CSCNA = 1;   // scanning mode
+    _SMPI = 0;    // begin new sampling sequence after every sample
+    _ALTS = 0;    // sample MUXA only
+
+    // AD1CON3
+    _ADRC = 0;    // use system clock
+    _SAMC = 1;    // sample every A/D period
+    _ADCS = 0x3F; // TAD = 64*TCY
+
+    //AD1CSSL = 1; 
+    //_CSS0 = 1;
+    _CH0NA = 0;  // Vref is ground
+    _CH0SA = 0;  // AN0
+    _CH0SB = 1;  // AN1
+    _CH0NB = 0; // Vref is ground
+    // ?????
+
+    _ADON = 1;    // enable module
+}
+
 void Forward(void) { // Enter the distance in mm
     
     right_dir_pin = 1;
@@ -101,4 +134,31 @@ void Turn_Right(void) {
     OC2R = 400;
     OC3RS = fast_pwm;
     OC3R = 400;
+}
+
+void Turn_Left(void) {
+    
+    left_dir_pin = 0;
+    OC2RS = fast_pwm;
+    OC2R = 400;
+    OC3RS = fast_pwm;
+    OC3R = 400;
+}
+
+// Turns right to get back to line
+void Adj_Right(void) {
+    // speed up left motor
+    left_motor_T = fast_pwm - 100;
+    left_motor_dc = 300;
+    right_motor_T = fast_pwm;
+    right_motor_dc = 400;
+}
+
+// Turns left to get back to line
+void Adj_Left(void) {
+    // speed up right motor
+    left_motor_T = fast_pwm;
+    left_motor_dc = 400;
+    right_motor_T = fast_pwm - 100;
+    right_motor_dc = 300;
 }

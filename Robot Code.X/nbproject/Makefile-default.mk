@@ -51,17 +51,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=MotionMilestone.c
+SOURCEFILES_QUOTED_IF_SPACED=Line_Following.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/MotionMilestone.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/MotionMilestone.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Line_Following.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/Line_Following.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/MotionMilestone.o
+OBJECTFILES=${OBJECTDIR}/Line_Following.o
 
 # Source Files
-SOURCEFILES=MotionMilestone.c
+SOURCEFILES=Line_Following.c
 
 
 
@@ -89,18 +89,18 @@ MP_LINKER_FILE_OPTION=,--script=p24F16KA301.gld
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${OBJECTDIR}/MotionMilestone.o: MotionMilestone.c  .generated_files/flags/default/b94bba8cc36a58180adb0f33ea87debe134234f .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/Line_Following.o: Line_Following.c  .generated_files/flags/default/9172dacd991d7be1fc818170ee64397e589737c4 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/MotionMilestone.o.d 
-	@${RM} ${OBJECTDIR}/MotionMilestone.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  MotionMilestone.c  -o ${OBJECTDIR}/MotionMilestone.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/MotionMilestone.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	@${RM} ${OBJECTDIR}/Line_Following.o.d 
+	@${RM} ${OBJECTDIR}/Line_Following.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  Line_Following.c  -o ${OBJECTDIR}/Line_Following.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/Line_Following.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
 else
-${OBJECTDIR}/MotionMilestone.o: MotionMilestone.c  .generated_files/flags/default/ed21f471e5337c27618401ed2c400dcd9176efda .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/Line_Following.o: Line_Following.c  .generated_files/flags/default/6ae8e7606ef067459b9053b7c6777bb95477a37f .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/MotionMilestone.o.d 
-	@${RM} ${OBJECTDIR}/MotionMilestone.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  MotionMilestone.c  -o ${OBJECTDIR}/MotionMilestone.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/MotionMilestone.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	@${RM} ${OBJECTDIR}/Line_Following.o.d 
+	@${RM} ${OBJECTDIR}/Line_Following.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  Line_Following.c  -o ${OBJECTDIR}/Line_Following.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/Line_Following.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
 endif
 

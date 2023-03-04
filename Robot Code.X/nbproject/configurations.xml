@@ -14,6 +14,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>MotionMilestone.c</itemPath>
+      <itemPath>Line_Following.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -197,7 +198,7 @@
         <property key="relaxed-math" value="false"/>
         <property key="save-temps" value="false"/>
       </C30Global>
-      <item path="MotionMilestone.c" ex="false" overriding="true">
+      <item path="MotionMilestone.c" ex="true" overriding="true">
         <C30>
           <property key="cast-align" value="false"/>
           <property key="code-model" value="default"/>
