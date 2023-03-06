@@ -73,7 +73,7 @@ int main(void) {
                 
             case TURNR180:
                 
-                if (steps >= 7700 && steps < 10200)
+                if (steps >= 7750 && steps < 10200)
                 {
                     Forward();
                     state = FORWARD;
