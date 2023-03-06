@@ -74,6 +74,8 @@ int main(void) {
                     Adj_Left();
                     state = ADJ_L;
                 }
+                
+                break;
         }
     }
     return 0;
