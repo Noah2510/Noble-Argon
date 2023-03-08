@@ -10,6 +10,14 @@
 #include "MotionFunctions.h"
 #pragma config FNOSC = FRCDIV // 8 MHz w post scaler
 
+unsigned int steps = 0;
+
+void __attribute__((interrupt, no_auto_psv))_OC2Interrupt(void) 
+{   
+    steps = steps + 1;
+    _OC2IF = 0; // clear flag
+} 
+
 enum { STRAIGHT, ADJ_R, ADJ_L } state;
 
 int main(void) {
@@ -33,12 +41,14 @@ int main(void) {
                 
                 if (ADC1BUF0 > threshold)
                 {
+                    steps = 0;
                     Adj_Left();
                     state = ADJ_L;
                 }
                 
                 else if (ADC1BUF1 > threshold)
                 {
+                    steps = 0;
                     Adj_Right();
                     state = ADJ_R;
                 }
@@ -49,12 +59,14 @@ int main(void) {
                 
                 if (ADC1BUF0 < threshold && ADC1BUF1 < threshold)
                 {
+                    steps = 0;
                     Forward();
                     state = STRAIGHT;
                 }
                 
                 else if (ADC1BUF0 > threshold)
                 {
+                    steps = 0;
                     Adj_Right();
                     state = ADJ_R;
                 }
@@ -65,12 +77,14 @@ int main(void) {
                 
                 if (ADC1BUF0 < threshold && ADC1BUF1 < threshold)
                 {
+                    steps = 0;
                     Forward();
                     state = STRAIGHT;
                 }
                 
                 else if (ADC1BUF1 > threshold)
                 {
+                    steps = 0;
                     Adj_Left();
                     state = ADJ_L;
                 }

@@ -148,7 +148,8 @@ void Turn_Left(void) {
 // Turns right to get back to line
 void Adj_Right(void) {
     // speed up left motor
-    left_motor_T = fast_pwm - 100;
+    
+    left_motor_T = fast_pwm - steps;
     left_motor_dc = 300;
     right_motor_T = fast_pwm;
     right_motor_dc = 400;
@@ -159,6 +160,6 @@ void Adj_Left(void) {
     // speed up right motor
     left_motor_T = fast_pwm;
     left_motor_dc = 400;
-    right_motor_T = fast_pwm - 100;
+    right_motor_T = fast_pwm - steps;
     right_motor_dc = 300;
 }
