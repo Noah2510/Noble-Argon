@@ -29,7 +29,7 @@ int main(void) {
     Forward();
     
     // set threshold for QRD to detect line
-    int threshold = 400;
+    int threshold = 1860; // 1.5V/3.3 * 4095
     
     state = STRAIGHT;
     
