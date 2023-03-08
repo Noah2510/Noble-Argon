@@ -20,11 +20,13 @@
 #define right_motor_dc OC2R
 #define right 1
 #define left 0
-#define med_pwm 1249
-#define fast_pwm 624
-#define slow_pwm 1999
+#define med_pwm 5999
+#define fast_pwm 749
+#define slow_pwm 2999
 #define right_QRD ADC1BUF0
 #define left_QRD ADC1BUF1
+#define right_QRD_dig _RA0
+#define left_QRD_dig _RA1
 
 unsigned int steps = 0;
 
@@ -41,6 +43,11 @@ void Motion_Setup(void) {
     
     right_dir_pin = 1; // start both servos in the same direction
     left_dir_pin = 1; 
+    
+    _TRISA0 = 1;
+    _TRISA1 = 1;
+    _ANSA0 = 0;
+    _ANSA1 = 0;
     
     // Configure PWM pins 
     //right motor
@@ -83,7 +90,7 @@ void Analog_Setup(void) {
     _NVCFG = 0;   // use VSS as negative reference
     _BUFREGEN = 1;// store results in buffer corresponding to channel number
     _CSCNA = 1;   // scanning mode
-    _SMPI = 0;    // begin new sampling sequence after every sample
+    _SMPI = 1;    // begin new sampling sequence after every sample
     _ALTS = 0;    // sample MUXA only
 
     // AD1CON3
@@ -92,11 +99,12 @@ void Analog_Setup(void) {
     _ADCS = 0x3F; // TAD = 64*TCY
 
     //AD1CSSL = 1; 
-    //_CSS0 = 1;
-    _CH0NA = 0;  // Vref is ground
-    _CH0SA = 0;  // AN0
-    _CH0SB = 1;  // AN1
-    _CH0NB = 0; // Vref is ground
+    _CSS0 = 1;
+    _CSS1 = 1;
+//    _CH0NA = 0;  // Vref is ground
+//    _CH0SA = 0;  // AN0
+//    _CH0SB = 1;  // AN1
+//    _CH0NB = 0; // Vref is ground
     // ?????
 
     _ADON = 1;    // enable module
@@ -106,10 +114,10 @@ void Forward(void) { // Enter the distance in mm
     
     right_dir_pin = 1;
     left_dir_pin = 1;
-    OC2RS = fast_pwm;
-    OC2R = 400;
-    OC3RS = fast_pwm;
-    OC3R = 400;
+    right_motor_T = fast_pwm;
+    right_motor_dc = right_motor_T/2;
+    left_motor_T = fast_pwm;
+    left_motor_dc = left_motor_T/2;
 
 }
 
@@ -155,14 +163,14 @@ void Adj_Right(void) {
     
     left_motor_T = fast_pwm/2;
     left_motor_dc = left_motor_T/2;
-    right_motor_T = fast_pwm;
+    right_motor_T = slow_pwm;
     right_motor_dc = right_motor_T/2;
 }
 
 // Turns left to get back to line
 void Adj_Left(void) {
     // speed up right motor
-    left_motor_T = fast_pwm;
+    left_motor_T = slow_pwm;
     left_motor_dc = left_motor_T/2;
     right_motor_T = fast_pwm/2;
     right_motor_dc = right_motor_T/2;

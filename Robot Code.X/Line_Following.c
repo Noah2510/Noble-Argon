@@ -20,7 +20,7 @@ enum { STRAIGHT, ADJ_R, ADJ_L } state;
 
 int main(void) {
     
-    _RCDIV = 0b010; // 2 MHz after 1/4 post scaler
+    //_RCDIV = 0b010; // 2 MHz after 1/4 post scaler
     
     Motion_Setup();
     Analog_Setup();
@@ -32,12 +32,12 @@ int main(void) {
     state = STRAIGHT;
     
     while(1){
-        
+       
         switch(state)
         {
             case STRAIGHT:
                 
-                if (left_QRD > threshold)
+                if (left_QRD_dig == 1 && right_QRD_dig != 1)
                 {
                     steps = 0;
                     _LATB7 = 1;
@@ -45,7 +45,7 @@ int main(void) {
                     state = ADJ_L;
                 }
                 
-                else if (right_QRD > threshold)
+                else if (right_QRD_dig == 1 && left_QRD_dig != 1)
                 {
                     steps = 0;
                     _LATB7 = 1;
@@ -57,16 +57,18 @@ int main(void) {
                 
             case ADJ_L:
                 
-                if (left_QRD < threshold && right_QRD < threshold)
+                if (left_QRD_dig != 1 && right_QRD_dig != 1)
                 {
                     steps = 0;
+                    _LATB7 = 0;
                     Forward();
                     state = STRAIGHT;
                 }
                 
-                else if (right_QRD > threshold)
+                else if (right_QRD_dig == 1 && left_QRD_dig != 1)
                 {
                     steps = 0;
+                    _LATB7 = 1;
                     Adj_Right();
                     state = ADJ_R;
                 }
@@ -75,16 +77,18 @@ int main(void) {
                 
             case ADJ_R:
                 
-                if (right_QRD < threshold && left_QRD < threshold)
+                if (right_QRD_dig != 1 && left_QRD_dig != 1)
                 {
                     steps = 0;
+                    _LATB7 = 0;
                     Forward();
                     state = STRAIGHT;
                 }
                 
-                else if (left_QRD > threshold)
+                else if (left_QRD_dig == 1 && right_QRD_dig != 1)
                 {
                     steps = 0;
+                    _LATB7 = 1;
                     Adj_Left();
                     state = ADJ_L;
                 }
