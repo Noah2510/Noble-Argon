@@ -23,6 +23,8 @@
 #define med_pwm 1249
 #define fast_pwm 624
 #define slow_pwm 1999
+#define right_QRD ADC1BUF0
+#define left_QRD ADC1BUF1
 
 unsigned int steps = 0;
 
@@ -152,16 +154,16 @@ void Adj_Right(void) {
     // speed up left motor
     
     left_motor_T = fast_pwm/2;
-    left_motor_dc = right_motor_T/2;
+    left_motor_dc = left_motor_T/2;
     right_motor_T = fast_pwm;
-    right_motor_dc = 400;
+    right_motor_dc = right_motor_T/2;
 }
 
 // Turns left to get back to line
 void Adj_Left(void) {
     // speed up right motor
     left_motor_T = fast_pwm;
-    left_motor_dc = 400;
+    left_motor_dc = left_motor_T/2;
     right_motor_T = fast_pwm/2;
     right_motor_dc = right_motor_T/2;
 }

@@ -37,7 +37,7 @@ int main(void) {
         {
             case STRAIGHT:
                 
-                if (ADC1BUF0 > threshold)
+                if (left_QRD > threshold)
                 {
                     steps = 0;
                     _LATB7 = 1;
@@ -45,7 +45,7 @@ int main(void) {
                     state = ADJ_L;
                 }
                 
-                else if (ADC1BUF1 > threshold)
+                else if (right_QRD > threshold)
                 {
                     steps = 0;
                     _LATB7 = 1;
@@ -57,14 +57,14 @@ int main(void) {
                 
             case ADJ_L:
                 
-                if (ADC1BUF0 < threshold && ADC1BUF1 < threshold)
+                if (left_QRD < threshold && right_QRD < threshold)
                 {
                     steps = 0;
                     Forward();
                     state = STRAIGHT;
                 }
                 
-                else if (ADC1BUF0 > threshold)
+                else if (right_QRD > threshold)
                 {
                     steps = 0;
                     Adj_Right();
@@ -75,14 +75,14 @@ int main(void) {
                 
             case ADJ_R:
                 
-                if (ADC1BUF0 < threshold && ADC1BUF1 < threshold)
+                if (right_QRD < threshold && left_QRD < threshold)
                 {
                     steps = 0;
                     Forward();
                     state = STRAIGHT;
                 }
                 
-                else if (ADC1BUF1 > threshold)
+                else if (left_QRD > threshold)
                 {
                     steps = 0;
                     Adj_Left();
