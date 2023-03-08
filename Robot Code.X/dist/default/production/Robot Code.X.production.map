@@ -18,7 +18,7 @@ Command:
   -Lc:/program files/microchip/xc16/v2.00/bin/bin/../../support/dsPIC33C/gld \
   -Lc:/program files/microchip/xc16/v2.00/bin/bin/../../support/dsPIC33E/gld \
   -Lc:/program files/microchip/xc16/v2.00/bin/bin/../../support/dsPIC33F/gld \
-  build/default/production/MotionMilestone.o \
+  build/default/production/Line_Following.o \
   --defsym=__MPLAB_BUILD=1 \
   -Tp24F16KA301.gld.00 \
   --stack=16 \
@@ -65,10 +65,10 @@ Default Scalar Model: Small
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200                0xe0           0x150  (336)
-.text                        0x2e0               0x156           0x201  (513)
-.dinit                       0x436                 0x8             0xc  (12)
+.text                        0x2e0               0x21e           0x32d  (813)
+.dinit                       0x4fe                 0x8             0xc  (12)
 
-                 Total "program" memory used (bytes):          0x35d  (861) 5%
+                 Total "program" memory used (bytes):          0x489  (1161) 7%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x800]
@@ -94,11 +94,13 @@ Info: Project is using a large data memory model when small data memory model is
 
 External Symbols in Data Memory (by address):
 
+                    0x0800                  _steps
                     0x0802                  _state
 
 External Symbols in Data Memory (by name):
 
                     0x0802                  _state
+                    0x0800                  _steps
 
 External Symbols in Program Memory (by address):
 
@@ -109,26 +111,34 @@ External Symbols in Program Memory (by address):
                   0x0002c8                  __OC2Interrupt
                   0x0002da                  __DefaultInterrupt
                   0x0002e0                  _Motion_Setup
-                  0x00034a                  _Forward
-                  0x000364                  _Backward
-                  0x00037e                  _STOP
-                  0x00038c                  _Turn_Right
-                  0x0003a4                  _main
+                  0x00034a                  _Analog_Setup
+                  0x0003b6                  _Forward
+                  0x0003d0                  _Backward
+                  0x0003ea                  _STOP
+                  0x0003f8                  _Turn_Right
+                  0x000410                  _Turn_Left
+                  0x000428                  _Adj_Right
+                  0x000440                  _Adj_Left
+                  0x000458                  _main
 
 External Symbols in Program Memory (by name):
 
-                  0x000364                  _Backward
-                  0x00034a                  _Forward
+                  0x000440                  _Adj_Left
+                  0x000428                  _Adj_Right
+                  0x00034a                  _Analog_Setup
+                  0x0003d0                  _Backward
+                  0x0003b6                  _Forward
                   0x0002e0                  _Motion_Setup
-                  0x00037e                  _STOP
-                  0x00038c                  _Turn_Right
+                  0x0003ea                  _STOP
+                  0x000410                  _Turn_Left
+                  0x0003f8                  _Turn_Right
                   0x0002da                  __DefaultInterrupt
                   0x0002c8                  __OC2Interrupt
                   0x000252                  __data_init
                   0x000252                  __data_init_standard
                   0x00023c                  __psv_init
                   0x000200                  __resetPRI
-                  0x0003a4                  _main
+                  0x000458                  _main
 
 Memory Configuration
 
@@ -152,7 +162,7 @@ FDS              0xf80010           0x000002
 
 Linker script and memory map
 
-LOAD build/default/production/MotionMilestone.o
+LOAD build/default/production/Line_Following.o
                     0x0001                  __MPLAB_BUILD = 0x1
 LOAD pPIC24Fxxx
 LOAD c:/program files/microchip/xc16/v2.00/bin/bin/../../lib\libfx-elf.a
@@ -190,7 +200,7 @@ LOAD c:/program files/microchip/xc16/v2.00/bin/bin/../../lib\libfx-elf.a
  *(.user_init)
  *(.handle)
  *(.isr*)
- .isr.text        0x0002c8         0x12 build/default/production/MotionMilestone.o
+ .isr.text        0x0002c8         0x12 build/default/production/Line_Following.o
                   0x0002c8                  __OC2Interrupt
  .isr             0x0002da          0x4 default_isr
                   0x0002da                  __DefaultInterrupt
@@ -233,26 +243,26 @@ __FDS
 .comment
  *(.comment)
 
-.debug_info       0x000000       0x137f
+.debug_info       0x000000       0x1b7f
  *(.debug_info)
- .debug_info      0x000000       0x137f build/default/production/MotionMilestone.o
+ .debug_info      0x000000       0x1b7f build/default/production/Line_Following.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev     0x000000        0x138
+.debug_abbrev     0x000000        0x13a
  *(.debug_abbrev)
- .debug_abbrev    0x000000        0x138 build/default/production/MotionMilestone.o
+ .debug_abbrev    0x000000        0x13a build/default/production/Line_Following.o
 
-.debug_line       0x000000        0x198
+.debug_line       0x000000        0x1c6
  *(.debug_line)
- .debug_line      0x000000        0x198 build/default/production/MotionMilestone.o
+ .debug_line      0x000000        0x1c6 build/default/production/Line_Following.o
 
-.debug_frame      0x000000         0xd4
+.debug_frame      0x000000        0x13c
  *(.debug_frame)
- .debug_frame     0x000000         0xd4 build/default/production/MotionMilestone.o
+ .debug_frame     0x000000        0x13c build/default/production/Line_Following.o
 
-.debug_str        0x000000         0xba
+.debug_str        0x000000         0xfb
  *(.debug_str)
- .debug_str       0x000000         0xba build/default/production/MotionMilestone.o
+ .debug_str       0x000000         0xfb build/default/production/Line_Following.o
 
 .debug_loc
  *(.debug_loc)
@@ -261,10 +271,10 @@ __FDS
  *(.debug_macinfo)
 
 .debug_pubnames
-                  0x000000         0x79
+                  0x000000         0xbd
  *(.debug_pubnames)
  .debug_pubnames
-                  0x000000         0x79 build/default/production/MotionMilestone.o
+                  0x000000         0xbd build/default/production/Line_Following.o
 
 .debug_ranges
  *(.debug_ranges)
@@ -272,7 +282,7 @@ __FDS
 .debug_aranges    0x000000         0x18
  *(.debug_aranges)
  .debug_aranges
-                  0x000000         0x18 build/default/production/MotionMilestone.o
+                  0x000000         0x18 build/default/production/Line_Following.o
                     0x0000                  WREG0 = 0x0
                     0x0000                  _WREG0 = 0x0
                     0x0002                  WREG1 = 0x2
@@ -892,39 +902,44 @@ LOAD default_isr
 LOAD data_init
 
 .debug_pubtypes
-                  0x000018        0x17c
+                  0x000018        0x206
  .debug_pubtypes
-                  0x000018        0x17c build/default/production/MotionMilestone.o
+                  0x000018        0x206 build/default/production/Line_Following.o
 
 __c30_signature
-                  0x000194         0x12
+                  0x00021e         0x12
  __c30_signature
-                  0x000194          0x6 build/default/production/MotionMilestone.o
+                  0x00021e          0x6 build/default/production/Line_Following.o
  __c30_signature
-                  0x00019a          0x6 c:/program files/microchip/xc16/v2.00/bin/bin/../../lib\libc99-pic30-elf.a(crt0_standard.o)
+                  0x000224          0x6 c:/program files/microchip/xc16/v2.00/bin/bin/../../lib\libc99-pic30-elf.a(crt0_standard.o)
  __c30_signature
-                  0x0001a0          0x6 c:/program files/microchip/xc16/v2.00/bin/bin/../../lib\libc99-pic30-elf.a(data_init_standard.o)
+                  0x00022a          0x6 c:/program files/microchip/xc16/v2.00/bin/bin/../../lib\libc99-pic30-elf.a(data_init_standard.o)
 
 .nbss               0x0800          0x4
- .nbss              0x0800          0x4 build/default/production/MotionMilestone.o
+ .nbss              0x0800          0x4 build/default/production/Line_Following.o
+                    0x0800                  _steps
                     0x0802                  _state
 
 .config_IESO      0xf80006          0x2
- .config_IESO     0xf80006          0x2 build/default/production/MotionMilestone.o
+ .config_IESO     0xf80006          0x2 build/default/production/Line_Following.o
 
 .ivt._OC2Interrupt
                   0x000020          0x2
  .ivt._OC2Interrupt
-                  0x000020          0x2 build/default/production/MotionMilestone.o
+                  0x000020          0x2 build/default/production/Line_Following.o
 
-.text             0x0002e0        0x156
- .text            0x0002e0        0x156 build/default/production/MotionMilestone.o
+.text             0x0002e0        0x21e
+ .text            0x0002e0        0x21e build/default/production/Line_Following.o
                   0x0002e0                  _Motion_Setup
-                  0x00034a                  _Forward
-                  0x000364                  _Backward
-                  0x00037e                  _STOP
-                  0x00038c                  _Turn_Right
-                  0x0003a4                  _main
+                  0x00034a                  _Analog_Setup
+                  0x0003b6                  _Forward
+                  0x0003d0                  _Backward
+                  0x0003ea                  _STOP
+                  0x0003f8                  _Turn_Right
+                  0x000410                  _Turn_Left
+                  0x000428                  _Adj_Right
+                  0x000440                  _Adj_Left
+                  0x000458                  _main
 
-.dinit            0x000436          0x8
- .dinit           0x000436          0x8 data_init
+.dinit            0x0004fe          0x8
+ .dinit           0x0004fe          0x8 data_init
