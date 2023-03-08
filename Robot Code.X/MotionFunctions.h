@@ -27,6 +27,7 @@
 #define left_QRD ADC1BUF1
 #define right_QRD_dig _RA0
 #define left_QRD_dig _RA1
+#define mid_QRD_dig _RB15
 
 unsigned int steps = 0;
 
@@ -46,6 +47,8 @@ void Motion_Setup(void) {
     
     _TRISA0 = 1;
     _TRISA1 = 1;
+    _TRISB15 = 1;
+    _ANSB15 = 0;
     _ANSA0 = 0;
     _ANSA1 = 0;
     
