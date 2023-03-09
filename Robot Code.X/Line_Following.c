@@ -56,6 +56,7 @@ int main(void) {
                 else if (right_QRD_dig == 0 && left_QRD_dig == 0 && mid_QRD_dig == 0)
                 {
                     STOP();
+                    Search4Line();
                     state = OFFLINE;
                 }
                 
@@ -82,6 +83,7 @@ int main(void) {
                 else if (right_QRD_dig == 0 && left_QRD_dig == 0 && mid_QRD_dig == 0)
                 {
                     STOP();
+                    Search4Line();
                     state = OFFLINE;
                 }
                 
@@ -108,6 +110,7 @@ int main(void) {
                 else if (right_QRD_dig == 0 && left_QRD_dig == 0 && mid_QRD_dig == 0)
                 {
                     STOP();
+                    Search4Line();
                     state = OFFLINE;
                 }
                 

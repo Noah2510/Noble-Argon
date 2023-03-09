@@ -178,3 +178,24 @@ void Adj_Left(void) {
     right_motor_T = fast_pwm/2;
     right_motor_dc = right_motor_T/2;
 }
+
+// Searches for line after getting off
+void Search4Line(void) {
+    
+    steps = 0;
+    Turn_Right();
+    
+    while(1){
+        
+        if (left_QRD_dig == 1 && steps > 1275)
+        {
+            Forward();
+            break;
+        }
+        else if (right_QRD_dig == 1 && steps < 850)
+        {
+            Forward();
+            break;
+        }
+    }
+}
