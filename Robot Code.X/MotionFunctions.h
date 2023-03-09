@@ -29,9 +29,11 @@
 #define right_QRD_dig _RA0
 #define left_QRD_dig _RA1
 #define mid_QRD_dig _RB15
+#define task_QRD _RB7
 
 unsigned int steps = 0;
 int previous_state = 0;
+int task_counter = 0;
 
 void Motion_Setup(void) {
     
@@ -41,8 +43,7 @@ void Motion_Setup(void) {
     
     _TRISB9 = 0; // left servo
     
-    _TRISB7 = 0;
-    _LATB7 = 0;
+    _TRISB7 = 1; // set task detection pin as DI
     
     right_dir_pin = 1; // start both servos in the same direction
     left_dir_pin = 1; 
@@ -115,17 +116,17 @@ void Analog_Setup(void) {
     _ADON = 1;    // enable module
 }
 
-void CN_Setup(void)
+void INT_Setup(void)
 {
-    _CN11IE = 1; // configure CN on pin 5
-    _CN11PUE = 0; // disable pull-up resistor
-    _CNIP = 4; // interrupt priority
-    _CNIF = 0; // clear flag
-    _CNIE = 1; // Enable CN interrupts
+    _INT0IP = 4; // set priority
+    _INT0IE = 1; // enable interrupt
+    _INT0IF = 0; // clear flag
+    _INT0EP = 1; // set edge detect polarity to positive edge
 }
 
 void Forward(void) { // Enter the distance in mm
     
+    steps = 0;
     right_dir_pin = 1;
     left_dir_pin = 1;
     right_motor_T = fast_pwm;
@@ -222,4 +223,19 @@ void Search4Line(void) {
             }
         }
     }
+}
+
+int Count_Tasks(void){
+    
+    Forward();
+    
+    while(1)
+    {
+        if(steps > 2400) // # of steps to get past all lines
+        {
+            break;
+        }
+    }
+    
+    return task_counter;
 }

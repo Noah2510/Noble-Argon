@@ -5,24 +5,23 @@
  * Created on March 9, 2023, 12:04 PM
  */
 
-// Testing for blake's github
 #include "xc.h"
 #include "MotionFunctions.h"
 #pragma config FNOSC = FRCDIV // 8 MHz w post scaler
 
+// PWM interrupt
 void __attribute__((interrupt, no_auto_psv))_OC2Interrupt(void) 
 {   
     steps = steps + 1;
     _OC2IF = 0; // clear flag
 } 
 
-unsigned int task_counter = 0;
-void _ISR _CNInterrupt(void)
+// External Interrupt when pin 11 (task sensing qrd) goes high (senses black line)
+void __attribute__((interrupt, no_auto_psv)) _INT0INterrupt(void)
 {
-    _CN1F = 0; // clear interrupt flag
+    _INT0IF = 0; // clear flag
     task_counter++;
 }
-
 enum { STRAIGHT, ADJ_R, ADJ_L, OFFLINE } state;
 
 int main(void) {
@@ -31,7 +30,7 @@ int main(void) {
     
     Motion_Setup();
     //Analog_Setup();
-    CN_Setup();
+    INT_Setup();
     Forward();
     
     // set threshold for QRD to detect line (Analog only))
@@ -69,6 +68,11 @@ int main(void) {
                     STOP();
                     Search4Line();
                     state = STRAIGHT;
+                }
+                
+                else if (task_QRD == 1)
+                {
+                    int x = Count_Tasks();
                 }
                 
                 break;
