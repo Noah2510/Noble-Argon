@@ -47,7 +47,7 @@ void Motion_Setup(void) {
     right_dir_pin = 1; // start both servos in the same direction
     left_dir_pin = 1; 
     
-    _TRISA0 = 1;
+    _TRISA0 = 1; // Set up QRD pins for digital input
     _TRISA1 = 1;
     _TRISB15 = 1;
     _ANSB15 = 0;
@@ -113,6 +113,15 @@ void Analog_Setup(void) {
     // ?????
 
     _ADON = 1;    // enable module
+}
+
+void CN_Setup(void)
+{
+    _CN11IE = 1; // configure CN on pin 5
+    _CN11PUE = 0; // disable pull-up resistor
+    _CNIP = 4; // interrupt priority
+    _CNIF = 0; // clear flag
+    _CNIE = 1; // Enable CN interrupts
 }
 
 void Forward(void) { // Enter the distance in mm

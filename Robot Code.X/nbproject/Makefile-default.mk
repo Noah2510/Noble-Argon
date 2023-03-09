@@ -51,17 +51,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=Line_Following.c
+SOURCEFILES_QUOTED_IF_SPACED=Line_Following.c Robot_Brain.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Line_Following.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/Line_Following.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Line_Following.o ${OBJECTDIR}/Robot_Brain.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/Line_Following.o.d ${OBJECTDIR}/Robot_Brain.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/Line_Following.o
+OBJECTFILES=${OBJECTDIR}/Line_Following.o ${OBJECTDIR}/Robot_Brain.o
 
 # Source Files
-SOURCEFILES=Line_Following.c
+SOURCEFILES=Line_Following.c Robot_Brain.c
 
 
 
@@ -95,12 +95,24 @@ ${OBJECTDIR}/Line_Following.o: Line_Following.c  .generated_files/flags/default/
 	@${RM} ${OBJECTDIR}/Line_Following.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  Line_Following.c  -o ${OBJECTDIR}/Line_Following.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/Line_Following.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
+${OBJECTDIR}/Robot_Brain.o: Robot_Brain.c  .generated_files/flags/default/692b6f8d57005bcbcc1729d04a9a85d468927d19 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/Robot_Brain.o.d 
+	@${RM} ${OBJECTDIR}/Robot_Brain.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  Robot_Brain.c  -o ${OBJECTDIR}/Robot_Brain.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/Robot_Brain.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
 else
 ${OBJECTDIR}/Line_Following.o: Line_Following.c  .generated_files/flags/default/6ae8e7606ef067459b9053b7c6777bb95477a37f .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/Line_Following.o.d 
 	@${RM} ${OBJECTDIR}/Line_Following.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  Line_Following.c  -o ${OBJECTDIR}/Line_Following.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/Line_Following.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/Robot_Brain.o: Robot_Brain.c  .generated_files/flags/default/af3d9f714551ddb86cc85803aa69ccae0fa1dc6f .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/Robot_Brain.o.d 
+	@${RM} ${OBJECTDIR}/Robot_Brain.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  Robot_Brain.c  -o ${OBJECTDIR}/Robot_Brain.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/Robot_Brain.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
 endif
 
