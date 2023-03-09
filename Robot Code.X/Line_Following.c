@@ -16,7 +16,7 @@ void __attribute__((interrupt, no_auto_psv))_OC2Interrupt(void)
     _OC2IF = 0; // clear flag
 } 
 
-enum { STRAIGHT, ADJ_R, ADJ_L } state;
+enum { STRAIGHT, ADJ_R, ADJ_L, OFFLINE } state;
 
 int main(void) {
     
@@ -53,6 +53,12 @@ int main(void) {
                     state = ADJ_R;
                 }
                 
+                else if (right_QRD_dig == 0 && left_QRD_dig == 0 && mid_QRD_dig == 0)
+                {
+                    STOP();
+                    state = OFFLINE;
+                }
+                
                 break;
                 
             case ADJ_L:
@@ -71,6 +77,12 @@ int main(void) {
                     _LATB7 = 1;
                     Adj_Right();
                     state = ADJ_R;
+                }
+                
+                else if (right_QRD_dig == 0 && left_QRD_dig == 0 && mid_QRD_dig == 0)
+                {
+                    STOP();
+                    state = OFFLINE;
                 }
                 
                 break;
@@ -92,6 +104,16 @@ int main(void) {
                     Adj_Left();
                     state = ADJ_L;
                 }
+                
+                else if (right_QRD_dig == 0 && left_QRD_dig == 0 && mid_QRD_dig == 0)
+                {
+                    STOP();
+                    state = OFFLINE;
+                }
+                
+                break;
+                
+            case OFFLINE:
                 
                 break;
         }
