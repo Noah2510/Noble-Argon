@@ -20,6 +20,7 @@
 #define right_motor_dc OC2R
 #define right 1
 #define left 0
+#define middle 3
 #define med_pwm 5999
 #define fast_pwm 749
 #define slow_pwm 2999
@@ -30,6 +31,7 @@
 #define mid_QRD_dig _RB15
 
 unsigned int steps = 0;
+int previous_state = 0;
 
 void Motion_Setup(void) {
     
@@ -183,19 +185,32 @@ void Adj_Left(void) {
 void Search4Line(void) {
     
     steps = 0;
-    Turn_Right();
     
-    while(1){
+    if (previous_state == left)
+    {
+        Turn_Right();
         
-        if (left_QRD_dig == 1 && steps > 1275)
+        while(1)
         {
-            Forward();
-            break;
+            if (right_QRD_dig == 1)
+            {
+                Forward();
+                break;
+            }
         }
-        else if (right_QRD_dig == 1 && steps < 850)
+    }
+    
+    if (previous_state == right)
+    {
+        Turn_Left();
+        
+        while(1)
         {
-            Forward();
-            break;
+            if (left_QRD_dig == 1)
+            {
+                Forward();
+                break;
+            }
         }
     }
 }

@@ -26,8 +26,8 @@ int main(void) {
     Analog_Setup();
     Forward();
     
-    // set threshold for QRD to detect line
-    int threshold = 1860; // 1.5V/3.3 * 4095
+    // set threshold for QRD to detect line (Analog only))
+    //int threshold = 1860; // 1.5V/3.3 * 4095
     
     state = STRAIGHT;
     
@@ -39,7 +39,8 @@ int main(void) {
                 
                 if (left_QRD_dig == 1 && right_QRD_dig != 1)
                 {
-                    steps = 0;
+                    //steps = 0;
+                    previous_state = middle;
                     _LATB7 = 1;
                     Adj_Left();
                     state = ADJ_L;
@@ -47,7 +48,8 @@ int main(void) {
                 
                 else if (right_QRD_dig == 1 && left_QRD_dig != 1)
                 {
-                    steps = 0;
+                    //steps = 0;
+                    previous_state = middle;
                     _LATB7 = 1;
                     Adj_Right();
                     state = ADJ_R;
@@ -55,9 +57,10 @@ int main(void) {
                 
                 else if (right_QRD_dig == 0 && left_QRD_dig == 0 && mid_QRD_dig == 0)
                 {
+                    previous_state = middle;
                     STOP();
                     Search4Line();
-                    state = OFFLINE;
+                    state = STRAIGHT;
                 }
                 
                 break;
@@ -66,7 +69,8 @@ int main(void) {
                 
                 if (left_QRD_dig != 1 && right_QRD_dig != 1)
                 {
-                    steps = 0;
+                    //steps = 0;
+                    previous_state = left;
                     _LATB7 = 0;
                     Forward();
                     state = STRAIGHT;
@@ -74,7 +78,8 @@ int main(void) {
                 
                 else if (right_QRD_dig == 1 && left_QRD_dig != 1)
                 {
-                    steps = 0;
+                    //steps = 0;
+                    previous_state = left;
                     _LATB7 = 1;
                     Adj_Right();
                     state = ADJ_R;
@@ -82,9 +87,10 @@ int main(void) {
                 
                 else if (right_QRD_dig == 0 && left_QRD_dig == 0 && mid_QRD_dig == 0)
                 {
+                    previous_state = left;
                     STOP();
                     Search4Line();
-                    state = OFFLINE;
+                    state = STRAIGHT;
                 }
                 
                 break;
@@ -93,7 +99,8 @@ int main(void) {
                 
                 if (right_QRD_dig != 1 && left_QRD_dig != 1)
                 {
-                    steps = 0;
+                    //steps = 0;
+                    previous_state = right;
                     _LATB7 = 0;
                     Forward();
                     state = STRAIGHT;
@@ -101,7 +108,8 @@ int main(void) {
                 
                 else if (left_QRD_dig == 1 && right_QRD_dig != 1)
                 {
-                    steps = 0;
+                    //steps = 0;
+                    previous_state = right;
                     _LATB7 = 1;
                     Adj_Left();
                     state = ADJ_L;
@@ -109,14 +117,11 @@ int main(void) {
                 
                 else if (right_QRD_dig == 0 && left_QRD_dig == 0 && mid_QRD_dig == 0)
                 {
+                    previous_state = right;
                     STOP();
                     Search4Line();
-                    state = OFFLINE;
+                    state = STRAIGHT;
                 }
-                
-                break;
-                
-            case OFFLINE:
                 
                 break;
         }
