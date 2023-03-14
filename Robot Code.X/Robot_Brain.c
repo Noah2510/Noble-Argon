@@ -22,24 +22,19 @@ void __attribute__((interrupt, no_auto_psv)) _INT0INterrupt(void)
     _INT0IF = 0; // clear flag
     task_counter++;
 }
-enum { STRAIGHT, ADJ_R, ADJ_L, OFFLINE } state;
+enum { STRAIGHT, ADJ_R, ADJ_L, PHASE_DETECTED } state;
 
 int main(void) {
     
-    //_RCDIV = 0b010; // 2 MHz after 1/4 post scaler
-    
     Motion_Setup();
-    //Analog_Setup();
     INT_Setup();
     Forward();
     
-    // set threshold for QRD to detect line (Analog only))
-    //int threshold = 1860; // 1.5V/3.3 * 4095
-    
     state = STRAIGHT;
+    int task_counter = 0;
     
     while(1){
-       
+        
         switch(state)
         {
             case STRAIGHT:
@@ -62,17 +57,18 @@ int main(void) {
                     state = ADJ_R;
                 }
                 
-                else if (right_QRD_dig == 0 && left_QRD_dig == 0 && mid_QRD_dig == 0)
-                {
-                    previous_state = middle;
-                    STOP();
-                    Search4Line();
-                    state = STRAIGHT;
-                }
+//                else if (right_QRD_dig == 0 && left_QRD_dig == 0 && mid_QRD_dig == 0)
+//                {
+//                    previous_state = middle;
+//                    STOP();
+//                    Search4Line();
+//                    state = STRAIGHT;
+//                }
                 
                 else if (task_QRD == 1)
                 {
-                    int x = Count_Tasks();
+                    task_counter = Count_Tasks();
+                    state = PHASE_DETECTED;
                 }
                 
                 break;
@@ -97,13 +93,19 @@ int main(void) {
                     state = ADJ_R;
                 }
                 
-                else if (right_QRD_dig == 0 && left_QRD_dig == 0 && mid_QRD_dig == 0)
+                else if (task_QRD == 1)
                 {
-                    previous_state = left;
-                    STOP();
-                    Search4Line();
-                    state = STRAIGHT;
+                    task_counter = Count_Tasks();
+                    state = PHASE_DETECTED;
                 }
+                
+//                else if (right_QRD_dig == 0 && left_QRD_dig == 0 && mid_QRD_dig == 0)
+//                {
+//                    previous_state = left;
+//                    STOP();
+//                    Search4Line();
+//                    state = STRAIGHT;
+//                }
                 
                 break;
                 
@@ -127,12 +129,33 @@ int main(void) {
                     state = ADJ_L;
                 }
                 
-                else if (right_QRD_dig == 0 && left_QRD_dig == 0 && mid_QRD_dig == 0)
+                else if (task_QRD == 1)
                 {
-                    previous_state = right;
-                    STOP();
-                    Search4Line();
+                    task_counter = Count_Tasks();
+                    state = PHASE_DETECTED;
+                }
+                
+//                else if (right_QRD_dig == 0 && left_QRD_dig == 0 && mid_QRD_dig == 0)
+//                {
+//                    previous_state = right;
+//                    STOP();
+//                    Search4Line();
+//                    state = STRAIGHT;
+//                }
+                
+                break;
+                
+            case PHASE_DETECTED:
+                
+                if (task_counter == 2)
+                {
+                    Forward();
                     state = STRAIGHT;
+                }
+                
+                else if (task_counter == 3)
+                {
+                    STOP();
                 }
                 
                 break;
