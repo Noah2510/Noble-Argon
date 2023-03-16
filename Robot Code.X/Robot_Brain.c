@@ -17,21 +17,22 @@ void __attribute__((interrupt, no_auto_psv))_OC2Interrupt(void)
 } 
 
 // External Interrupt when pin 11 (task sensing qrd) goes high (senses black line)
-void __attribute__((interrupt, no_auto_psv)) _INT0INterrupt(void)
+void __attribute__((interrupt, no_auto_psv)) _INT0Interrupt(void)
 {
     _INT0IF = 0; // clear flag
     task_counter++;
 }
-enum { STRAIGHT, ADJ_R, ADJ_L, PHASE_DETECTED } state;
+enum { STRAIGHT, ADJ_R, ADJ_L} state;
 
 int main(void) {
     
     Motion_Setup();
     INT_Setup();
+    Timer_Setup();
     Forward();
+    //Turn_Left();
     
     state = STRAIGHT;
-    int task_counter = 0;
     
     while(1){
         
@@ -42,8 +43,8 @@ int main(void) {
                 if (left_QRD_dig == 1 && right_QRD_dig != 1)
                 {
                     //steps = 0;
-                    previous_state = middle;
-                    _LATB7 = 1;
+                    //previous_state = middle;
+                    //_LATA2 = 1;
                     Adj_Left();
                     state = ADJ_L;
                 }
@@ -51,8 +52,8 @@ int main(void) {
                 else if (right_QRD_dig == 1 && left_QRD_dig != 1)
                 {
                     //steps = 0;
-                    previous_state = middle;
-                    _LATB7 = 1;
+                    //previous_state = middle;
+                    //_LATA2 = 1;
                     Adj_Right();
                     state = ADJ_R;
                 }
@@ -65,21 +66,35 @@ int main(void) {
 //                    state = STRAIGHT;
 //                }
                 
-                else if (task_QRD == 1)
+                else if (task_QRD == 1 && task_counter < 1)
                 {
-                    task_counter = Count_Tasks();
-                    state = PHASE_DETECTED;
+                    _TON = 1; // start timer
+                    task_counter = 0;
+                    _LATA2 = 1;
+                    //task_counter = Count_Tasks();
+                    //state = PHASE_DETECTED;
+                }
+                
+                else if (TMR1 >= 35000 && task_counter == 1)
+                {
+                    task_counter = 0;
+                    _TON = 0;
+                    TMR1 = 0;
+                }
+                
+                else if (TMR1 >= 35000 && task_counter == 2)
+                {
+                    STOP();
                 }
                 
                 break;
                 
             case ADJ_L:
-                
+                //_LATA2 = 1;
                 if (left_QRD_dig != 1 && right_QRD_dig != 1)
                 {
                     //steps = 0;
-                    previous_state = left;
-                    _LATB7 = 0;
+                    //previous_state = left;
                     Forward();
                     state = STRAIGHT;
                 }
@@ -87,16 +102,30 @@ int main(void) {
                 else if (right_QRD_dig == 1 && left_QRD_dig != 1)
                 {
                     //steps = 0;
-                    previous_state = left;
-                    _LATB7 = 1;
+                    //previous_state = left;
                     Adj_Right();
                     state = ADJ_R;
                 }
                 
-                else if (task_QRD == 1)
+                else if (task_QRD == 1 && task_counter < 1)
                 {
-                    task_counter = Count_Tasks();
-                    state = PHASE_DETECTED;
+                    _TON = 1; // start timer
+                    task_counter = 0;
+                    _LATA2 = 1;
+                    //task_counter = Count_Tasks();
+                    //state = PHASE_DETECTED;
+                }
+                
+                else if (TMR1 >= 35000 && task_counter == 1)
+                {
+                    task_counter = 0;
+                    _TON = 0;
+                    TMR1 = 0;
+                }
+                
+                else if (TMR1 >= 35000 && task_counter >= 2)
+                {
+                    STOP();
                 }
                 
 //                else if (right_QRD_dig == 0 && left_QRD_dig == 0 && mid_QRD_dig == 0)
@@ -114,8 +143,7 @@ int main(void) {
                 if (right_QRD_dig != 1 && left_QRD_dig != 1)
                 {
                     //steps = 0;
-                    previous_state = right;
-                    _LATB7 = 0;
+                    //previous_state = right;
                     Forward();
                     state = STRAIGHT;
                 }
@@ -123,16 +151,30 @@ int main(void) {
                 else if (left_QRD_dig == 1 && right_QRD_dig != 1)
                 {
                     //steps = 0;
-                    previous_state = right;
-                    _LATB7 = 1;
+                    //previous_state = right;
                     Adj_Left();
                     state = ADJ_L;
                 }
                 
-                else if (task_QRD == 1)
+                else if (task_QRD == 1 && task_counter < 1)
                 {
-                    task_counter = Count_Tasks();
-                    state = PHASE_DETECTED;
+                    _TON = 1; // start timer
+                    task_counter = 0;
+                    _LATA2 = 1;
+                    //task_counter = Count_Tasks();
+                    //state = PHASE_DETECTED;
+                }
+                
+                else if (TMR1 >= 35000 && task_counter == 2)
+                {
+                    STOP();
+                }
+                
+                else if (TMR1 >= 46875 && task_counter == 1)
+                {
+                    task_counter = 0;
+                    _TON = 0;
+                    TMR1 = 0;
                 }
                 
 //                else if (right_QRD_dig == 0 && left_QRD_dig == 0 && mid_QRD_dig == 0)
@@ -142,21 +184,6 @@ int main(void) {
 //                    Search4Line();
 //                    state = STRAIGHT;
 //                }
-                
-                break;
-                
-            case PHASE_DETECTED:
-                
-                if (task_counter == 2)
-                {
-                    Forward();
-                    state = STRAIGHT;
-                }
-                
-                else if (task_counter == 3)
-                {
-                    STOP();
-                }
                 
                 break;
         }
