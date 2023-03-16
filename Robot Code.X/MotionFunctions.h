@@ -35,13 +35,22 @@ unsigned int steps = 0;
 int previous_state = 0;
 int task_counter = 0;
 
+void Timer_Setup(void){
+    
+    _TON = 1;
+    _TCS = 0;
+    _TCKPS = 0b10; // prescale
+    TMR1 = 0; // set timer to 0
+    _TON = 0;
+}
+
 void Motion_Setup(void) {
     
     // Configure direction pins as digital outputs
-    _ANSB13 = 0; // right servo
+    _ANSB13 = 0; // right stepper
     _TRISB13 = 0;
     
-    _TRISB9 = 0; // left servo
+    _TRISB9 = 0; // left stepper
     
     _TRISB7 = 1; // set task detection pin as DI
     
@@ -55,7 +64,16 @@ void Motion_Setup(void) {
     _ANSA0 = 0;
     _ANSA1 = 0;
     
-    // Configure PWM pins 
+    // LED
+    _TRISA2 = 0;
+    _ANSA2 = 0;
+    
+    // Configure PWM pins as digital outputs
+    _TRISB0 = 0;
+    _TRISB1 = 0;
+    _ANSB0 = 0;
+    _ANSB1 = 0;
+    
     //right motor
     OC2CON1 = 0;
     OC2CON2 = 0;
@@ -118,10 +136,10 @@ void Analog_Setup(void) {
 
 void INT_Setup(void)
 {
-    _INT0IP = 4; // set priority
+    _INT0IP = 3; // set priority
     _INT0IE = 1; // enable interrupt
     _INT0IF = 0; // clear flag
-    _INT0EP = 1; // set edge detect polarity to positive edge
+    _INT0EP = 0; // set edge detect polarity to positive edge
 }
 
 void Forward(void) { // Enter the distance in mm
@@ -193,19 +211,20 @@ void Adj_Left(void) {
 
 // Searches for line after getting off
 void Search4Line(void) {
-    
+    // Do I need to create a state machine for this to work?
     steps = 0;
+    int x = 1;
     
     if (previous_state == left)
     {
         Turn_Right();
         
-        while(1)
+        while(x)
         {
             if (right_QRD_dig == 1)
             {
-                Forward();
-                break;
+                Adj_Right();
+                x = 0;
             }
         }
     }
@@ -214,28 +233,28 @@ void Search4Line(void) {
     {
         Turn_Left();
         
-        while(1)
+        while(x)
         {
             if (left_QRD_dig == 1)
             {
-                Forward();
-                break;
+                Adj_Left();
+                x = 0;
             }
         }
     }
 }
 
-int Count_Tasks(void){
-    
-    Forward();
-    
-    while(1)
+void Count_Tasks(void){
+    _LATA2 = 1;
+    steps = 0;
+    //Forward();
+    int x = 1;
+    while(x)
     {
-        if(steps > 2400) // # of steps to get past all lines
+        if(steps > 800) // # of steps to get past all lines
         {
-            break;
+            _LATA2 = 0;
+            x = 0;;
         }
     }
-    
-    return task_counter;
 }
