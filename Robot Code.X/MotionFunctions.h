@@ -22,26 +22,36 @@
 #define left 0
 #define middle 3
 #define med_pwm 5999
-#define fast_pwm 749
-#define slow_pwm 2999
+#define fast_pwm 999
+#define slow_pwm 3999
 #define right_QRD ADC1BUF0
 #define left_QRD ADC1BUF1
 #define right_QRD_dig _RA0
 #define left_QRD_dig _RA1
 #define mid_QRD_dig _RB15
 #define task_QRD _RB7
+#define enable_oc_int _OC2IE
 
 unsigned int steps = 0;
 int previous_state = 0;
 int task_counter = 0;
 
 void Timer_Setup(void){
-    
-    _TON = 1;
-    _TCS = 0;
-    _TCKPS = 0b10; // prescale
+    // Try doing it with TMRCON1BITS.... and stuff
+    T1CONbits.TON = 1; // turn timer on
+    T1CONbits.TCS = 0;
+    T1CONbits.TCKPS = 0b10; // prescale
+    PR1 = 0xFFFF; // max timer period 
     TMR1 = 0; // set timer to 0
-    _TON = 0;
+    T1CONbits.TON = 0; // turn timer off 
+    
+    // Second timer for white blobs on line
+//    T2CONbits.TON = 1; 
+//    T2CONbits.TCS = 0;
+//    T2CONbits.TCKPS = 0b10;
+//    PR2 = 0xFFFF;
+//    TMR2 = 0;
+//    T2CONbits.TON = 0;
 }
 
 void Motion_Setup(void) {
