@@ -110,46 +110,55 @@ void Motion_Setup(void) {
     _OC2IF = 0; // clear flag
 }
 
-void Analog_Setup(void) {
-    _ADON = 0;    // Disable A/D module during configuration
-    
-    // AD1CON1
-    _MODE12 = 1;  // 12-bit resolution
-    _FORM = 0;    // unsigned integer output
-    _SSRC = 7;    // auto convert
-    _ASAM = 1;    // auto sample
-
-    // AD1CON2
-    _PVCFG = 0;   // use VDD as positive reference
-    _NVCFG = 0;   // use VSS as negative reference
-    _BUFREGEN = 1;// store results in buffer corresponding to channel number
-    _CSCNA = 1;   // scanning mode
-    _SMPI = 1;    // begin new sampling sequence after every sample
-    _ALTS = 0;    // sample MUXA only
-
-    // AD1CON3
-    _ADRC = 0;    // use system clock
-    _SAMC = 1;    // sample every A/D period
-    _ADCS = 0x3F; // TAD = 64*TCY
-
-    //AD1CSSL = 1; 
-    _CSS0 = 1;
-    _CSS1 = 1;
-//    _CH0NA = 0;  // Vref is ground
-//    _CH0SA = 0;  // AN0
-//    _CH0SB = 1;  // AN1
-//    _CH0NB = 0; // Vref is ground
-    // ?????
-
-    _ADON = 1;    // enable module
-}
+//void Analog_Setup(void) {
+//    _ADON = 0;    // Disable A/D module during configuration
+//    
+//    // AD1CON1
+//    _MODE12 = 1;  // 12-bit resolution
+//    _FORM = 0;    // unsigned integer output
+//    _SSRC = 7;    // auto convert
+//    _ASAM = 1;    // auto sample
+//
+//    // AD1CON2
+//    _PVCFG = 0;   // use VDD as positive reference
+//    _NVCFG = 0;   // use VSS as negative reference
+//    _BUFREGEN = 1;// store results in buffer corresponding to channel number
+//    _CSCNA = 1;   // scanning mode
+//    _SMPI = 1;    // begin new sampling sequence after every sample
+//    _ALTS = 0;    // sample MUXA only
+//
+//    // AD1CON3
+//    _ADRC = 0;    // use system clock
+//    _SAMC = 1;    // sample every A/D period
+//    _ADCS = 0x3F; // TAD = 64*TCY
+//
+//    //AD1CSSL = 1; 
+//    _CSS0 = 1;
+//    _CSS1 = 1;
+////    _CH0NA = 0;  // Vref is ground
+////    _CH0SA = 0;  // AN0
+////    _CH0SB = 1;  // AN1
+////    _CH0NB = 0; // Vref is ground
+//    // ?????
+//
+//    _ADON = 1;    // enable module
+//}
 
 void INT_Setup(void)
 {
-    _INT0IP = 3; // set priority
-    _INT0IE = 1; // enable interrupt
-    _INT0IF = 0; // clear flag
-    _INT0EP = 0; // set edge detect polarity to positive edge
+    IPC5bits.INT1IP = 0b111; // interrupt priority
+    INTCON2bits.INT0EP = 1;     // Interrupt on positive edge
+    IFS0bits.INT0IF = 0;        // Clear the interrupt flag
+    IEC0bits.INT0IE = 1;        // Enable the interrupt
+}
+
+void CN_Setup(void) {
+    
+    _CN23IE = 1; // enable
+    _CN23PUE = 0; // 0 disables pull-up resistor
+    _CNIP = 6; // priority
+    _CNIF = 0; // clear flag
+    _CNIE = 1; // enable CN
 }
 
 void Forward(void) { // Enter the distance in mm
@@ -254,17 +263,17 @@ void Search4Line(void) {
     }
 }
 
-void Count_Tasks(void){
-    _LATA2 = 1;
-    steps = 0;
-    //Forward();
-    int x = 1;
-    while(x)
-    {
-        if(steps > 800) // # of steps to get past all lines
-        {
-            _LATA2 = 0;
-            x = 0;;
-        }
-    }
-}
+//void Count_Tasks(void){
+//    _LATA2 = 1;
+//    steps = 0;
+//    //Forward();
+//    int x = 1;
+//    while(x)
+//    {
+//        if(steps > 800) // # of steps to get past all lines
+//        {
+//            _LATA2 = 0;
+//            x = 0;;
+//        }
+//    }
+//}
