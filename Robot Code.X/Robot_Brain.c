@@ -9,6 +9,7 @@
 #include "Motion_FunctionsN.h"
 #include "Task_FunctionsN.h"
 #pragma config FNOSC = FRCDIV // 8 MHz w post scaler
+#pragma config ICS = PGx3
 
 // PWM interrupt
 void __attribute__((interrupt, no_auto_psv))_OC2Interrupt(void) 
@@ -188,14 +189,15 @@ int main(void) {
                 
             case TASK_COUNT:
                 
-                if (task_counter != 6)
+                if (task_counter >= 100 && task_counter < 200)
                 {
                     
-                    //_LATA2 = 1;
+                    _LATA2 = 1;
+                    STOP();
                     task_counter = 0;
 //                    T1CONbits.TON = 0;
 //                    TMR1 = 0;
-                    state = STRAIGHT;
+                    state = STOPPED;
                 }
                 
 //                else if(task_counter == 2)
@@ -208,7 +210,7 @@ int main(void) {
 //                    state = STRAIGHT;
 //                }
                 
-                else if (task_counter == 6)
+                else if (task_counter >= 200 && task_counter <= 300)
                 {
                     _LATA2 = 1;
                     STOP();
