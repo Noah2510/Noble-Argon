@@ -6,8 +6,8 @@
  */
 
 #include "xc.h"
-#include "MotionFunctions.h"
-#include "Task_Functions.h"
+#include "Motion_FunctionsN.h"
+#include "Task_FunctionsN.h"
 #pragma config FNOSC = FRCDIV // 8 MHz w post scaler
 
 // PWM interrupt
@@ -17,33 +17,52 @@ void __attribute__((interrupt, no_auto_psv))_OC2Interrupt(void)
     _OC2IF = 0; // clear flag
 } 
 
-// External Interrupt when pin 11 (task sensing qrd) goes high (senses black line)
-void __attribute__((interrupt, no_auto_psv)) _INT0Interrupt(void)
-{
-    _INT0IF = 0; // clear flag
-    task_counter++;
+void _ISR _CNInterrupt(void) {
     
+    _CNIF = 0; // clear flag
+//    if (task_QRD == 1)
+//    {
+//    _LATA2 = 1;
+//    task_counter++;
+//    }
+    task_counter++;
+    _LATA2 = 1;
     if (task_counter == 1){
-        _LATA2 = 1;
+        //_LATA2 = 1;
         TMR1 = 0;
         T1CONbits.TON = 1; // turn on timer for line counting
-//        TMR2 = 0;
-//        T2CONbits.TON = 1; // turn on timer for spot avoidance
     }
-//    else if (TMR2 <= 1000 && TMR2 >= 100)
-//    {
-//        task_counter--;
-//        TMR2 = 0;
-//    }
-
+    
+    _LATA2 = 0;
 }
-enum { STRAIGHT, ADJ_R, ADJ_L, TASK_COUNT} state;
+
+// External Interrupt when pin 11 (task sensing qrd) goes high (senses black line)
+//void __attribute__((interrupt, no_auto_psv)) _INT0Interrupt(void)
+//{
+//    _INT0IF = 0; // clear flag
+////    if (task_QRD == 1)
+////    {
+////    _LATA2 = 1;
+////    task_counter++;
+////    }
+//    task_counter++;
+//    _LATA2 = 1;
+//    if (task_counter == 1){
+//        //_LATA2 = 1;
+//        TMR1 = 0;
+//        T1CONbits.TON = 1; // turn on timer for line counting
+//    }
+//    
+//    _LATA2 = 0;
+//}
+
+enum { STRAIGHT, ADJ_R, ADJ_L, TASK_COUNT, STOPPED} state;
 
 int main(void) {
     
     Motion_Setup();
-    INT_Setup();
-    Analog_Setup();
+    CN_Setup();
+    //INT_Setup();
     Timer_Setup();
     Forward();
     //Turn_Left();
@@ -84,7 +103,10 @@ int main(void) {
                 
                 else if (TMR1 >= 20000)
                 {
-                    _LATA2 = 0;
+                    //_LATA2 = 1;
+                    T1CONbits.TON = 0;
+                    TMR1 = 0;
+                    //STOP();
                     state = TASK_COUNT;
                 }
                 
@@ -110,7 +132,10 @@ int main(void) {
                 
                 else if (TMR1 >= 20000)
                 {
-                    _LATA2 = 0;
+                    //_LATA2 = 1;
+                    T1CONbits.TON = 0;
+                    TMR1 = 0;
+                    //STOP();
                     state = TASK_COUNT;
                 }
                 
@@ -144,7 +169,10 @@ int main(void) {
                 
                 else if (TMR1 >= 20000)
                 {
-                    _LATA2 = 0;
+                    //_LATA2 = 1;
+                    T1CONbits.TON = 0;
+                    TMR1 = 0;
+                    //STOP();
                     state = TASK_COUNT;
                 }
                 
@@ -160,32 +188,50 @@ int main(void) {
                 
             case TASK_COUNT:
                 
-                if (task_counter < 3)
+                if (task_counter != 6)
                 {
-                    Ball_Collection();
-                    task_counter = 0;
-                    T1CONbits.TON = 0;
-                    TMR1 = 0;
-                    state = ADJ_R;
-                }
-                
-                else if (task_counter == 3)
-                {
-                    STOP();
-                    task_counter = 0;
-                    T1CONbits.TON = 0;
-                    TMR1 = 0;
-                }
-                
-                else if (task_counter == 4)
-                {
-                    task_counter = 0;
-                    T1CONbits.TON = 0;
-                    TMR1 = 0;
-                    state = STRAIGHT;
-                    STOP();
-                }
                     
+                    //_LATA2 = 1;
+                    task_counter = 0;
+//                    T1CONbits.TON = 0;
+//                    TMR1 = 0;
+                    state = STRAIGHT;
+                }
+                
+//                else if(task_counter == 2)
+//                {
+//                    //_LATA2 = 1;
+//                    task_counter = 0;
+//                    T1CONbits.TON = 0;
+//                    TMR1 = 0;
+//                    Ball_Collection();
+//                    state = STRAIGHT;
+//                }
+                
+                else if (task_counter == 6)
+                {
+                    _LATA2 = 1;
+                    STOP();
+                    task_counter = 0;
+//                    T1CONbits.TON = 0;
+//                    TMR1 = 0;
+                    state = STOPPED;
+                }
+                
+//                else if (task_counter > 3)
+//                {
+//                    task_counter = 0;
+//                    T1CONbits.TON = 0;
+//                    TMR1 = 0;
+//                    state = STRAIGHT;
+//                    //STOP();
+//                }
+                
+                break;
+                    
+            case STOPPED:
+                
+                break;
         }
     }
     return 0;
